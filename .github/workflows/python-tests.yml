@@ -1,4 +1,7 @@
-name: Python Unit Tests
+- name: Run tests
+  run: |
+    python -m unittest discover -s tests -p "test_tahmin_oyunu.py"
+
 
 on:
   push:
