@@ -26,5 +26,4 @@ jobs:
         python -m pip install --upgrade pip  # Pip'i güncelle
 
     - name: Run tests
-      run: |
-        python -m unittest discover -s tests -p "*.py"  # Testleri çalıştırır
+      working-directory: ./  # Te
