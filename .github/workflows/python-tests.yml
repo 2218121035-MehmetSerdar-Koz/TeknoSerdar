@@ -24,8 +24,8 @@ jobs:
     - name: Install dependencies (if any)
       run: |
         python -m pip install --upgrade pip  # Pip'i güncelle
-        # Eğer requirements.txt yoksa bu satırı kaldırabilirsiniz:
-        pip install -r requirements.txt  # Bağımlılıkları yükle
+        # requirements.txt yoksa bu satırı kaldırabilirsiniz:
+        # pip install -r requirements.txt  # Bağımlılıkları yükle
 
     - name: Run tests
       run: |
