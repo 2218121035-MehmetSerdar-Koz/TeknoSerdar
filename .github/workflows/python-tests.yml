@@ -1,0 +1,31 @@
+name: Python Unit Tests
+
+on:
+  push:
+    branches:
+      - main  # Main dalına her kod gönderildiğinde çalışır
+  pull_request:
+    branches:
+      - main  # Pull Request oluşturulduğunda çalışır
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3  # Kod deposunu klonlar
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'  # Python sürümünü belirtir
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt || true  # `requirements.txt` varsa yükler
+
+    - name: Run tests
+      run: |
+        python -m unittest discover -s tests -p "*.py"  # Testleri çalıştırır
