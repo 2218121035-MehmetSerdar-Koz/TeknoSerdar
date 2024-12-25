@@ -31,33 +31,48 @@ def tahmin_oyunu():
 # Test sınıfı
 class TestTahminOyunu(unittest.TestCase):
 
+    @patch('builtins.input', side_effect=[50, 30, 70])  # Girdi sırasıyla
+    @patch('builtins.print')  # Print fonksiyonunu mock'la
+    def test_tahmin_oyunu_basarili(self, mock_print, mock_input):
+        # Hedef sayıyı sabitlemek için random.randint'i mock'layabiliriz
+        with patch('random.randint', return_value=70):
+            tahmin_oyunu()  # Fonksiyonu çalıştır
+
+            # Beklenen çıktılar
+            mock_print.assert_any_call("1 ile 100 arasında bir sayı tuttum. Bakalım tahmin edebilecek misin?")
+            mock_print.assert_any_call("Daha küçük bir sayı dene!")  # 50 -> 70'e göre küçük
+            mock_print.assert_any_call("Daha büyük bir sayı dene!")  # 30 -> 70'e göre küçük
+            mock_print.assert_any_call("Tebrikler! Doğru tahmin ettin 🎉")  # 70 ile doğru tahmin
+
     @patch('builtins.input', side_effect=[50, 30, 70, 90, 80, 60, 40])  # Girdi sırasıyla
     @patch('builtins.print')  # Print fonksiyonunu mock'la
-    @patch('random.randint', return_value=70)  # Hedef sayıyı sabitle
-    def test_tahmin_oyunu_basarili(self, mock_random, mock_print, mock_input):
-        tahmin_oyunu()  # Fonksiyonu çalıştır
+    def test_tahmin_oyunu_basarisiz(self, mock_print, mock_input):
+        # Hedef sayıyı sabitlemek için random.randint'i mock'layabiliriz
+        with patch('random.randint', return_value=10):
+            tahmin_oyunu()  # Fonksiyonu çalıştır
 
-        # Beklenen çıktılar
-        mock_print.assert_any_call("1 ile 100 arasında bir sayı tuttum. Bakalım tahmin edebilecek misin?")
-        mock_print.assert_any_call("Daha küçük bir sayı dene!")  # 50 -> 70'e göre küçük
-        mock_print.assert_any_call("Daha büyük bir sayı dene!")  # 30 -> 70'e göre küçük
-        mock_print.assert_any_call("Tebrikler! Doğru tahmin ettin 🎉")  # 70 ile doğru tahmin
+            # Beklenen çıktılar
+            mock_print.assert_any_call("1 ile 100 arasında bir sayı tuttum. Bakalım tahmin edebilecek misin?")
+            mock_print.assert_any_call("Daha küçük bir sayı dene!")  # 50 -> 10'a göre büyük
+            mock_print.assert_any_call("Daha küçük bir sayı dene!")  # 30 -> 10'a göre büyük
+            mock_print.assert_any_call("Daha küçük bir sayı dene!")  # 70 -> 10'a göre büyük
+            mock_print.assert_any_call("Daha küçük bir sayı dene!")  # 90 -> 10'a göre büyük
+            mock_print.assert_any_call("Daha küçük bir sayı dene!")  # 80 -> 10'a göre büyük
+            mock_print.assert_any_call("Daha küçük bir sayı dene!")  # 60 -> 10'a göre büyük
+            mock_print.assert_any_call("Daha küçük bir sayı dene!")  # 40 -> 10'a göre büyük
+            mock_print.assert_any_call("Üzgünüm, hakkın bitti. Tutulan sayı 10 idi.")
 
-    @patch('builtins.input', side_effect=[50, 30, 70, 90, 80, 60, 40])  # Girdi sırasıyla
+    @patch('builtins.input', side_effect=["not_a_number", 50, 70])  # Geçersiz girdi ve sonra doğru tahmin
     @patch('builtins.print')  # Print fonksiyonunu mock'la
-    @patch('random.randint', return_value=10)  # Hedef sayıyı sabitle
-    def test_tahmin_oyunu_basarisiz(self, mock_random, mock_print, mock_input):
-        tahmin_oyunu()  # Fonksiyonu çalıştır
+    def test_tahmin_oyunu_gecersiz_input(self, mock_print, mock_input):
+        # Hedef sayıyı sabitlemek için random.randint'i mock'layabiliriz
+        with patch('random.randint', return_value=70):
+            tahmin_oyunu()  # Fonksiyonu çalıştır
 
-        # Beklenen çıktılar
-        mock_print.assert_any_call("1 ile 100 arasında bir sayı tuttum. Bakalım tahmin edebilecek misin?")
-        mock_print.assert_any_call("Daha küçük bir sayı dene!")  # 50 -> 10'a göre büyük
-        mock_print.assert_any_call("Daha küçük bir sayı dene!")  # 30 -> 10'a göre büyük
-        mock_print.assert_any_call("Daha küçük bir sayı dene!")  # 70 -> 10'a göre büyük
-        mock_print.assert_any_call("Daha küçük bir sayı dene!")  # 90 -> 10'a göre büyük
-        mock_print.assert_any_call("Daha küçük bir sayı dene!")  # 80 -> 10'a göre büyük
-        mock_print.assert_any_call("Daha küçük bir sayı dene!")  # 60 -> 10'a göre büyük
-        mock_print.assert_any_call("Daha küçük bir sayı dene!")  # 40 -> 10'a göre büyük
-        mock_print.assert_any_call("Üzgünüm, hakkın bitti. Tutulan sayı 10 idi.")
+            # Beklenen çıktılar
+            mock_print.assert_any_call("Lütfen bir sayı gir!")  # Geçersiz input
+            mock_print.assert_any_call("Daha küçük bir sayı dene!")  # 50 -> 70'e göre küçük
+            mock_print.assert_any_call("Tebrikler! Doğru tahmin ettin 🎉")  # 70 ile doğru tahmin
 
-    @patch('builtins.input', side_effect=[
+if __name__ == '__main__':
+    unittest.main()
