@@ -25,3 +25,4 @@ def tahmin_oyunu():
     print(f"Üzgünüm, hakkın bitti. Tutulan sayı {hedef} idi.")
 
 tahmin_oyunu()
+#SerdarBbabaaa
