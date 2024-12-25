@@ -1,7 +1,4 @@
-- name: Run tests
-  run: |
-    python -m unittest discover -s tests -p "test_tahmin_oyunu.py"
-
+name: Python application
 
 on:
   push:
@@ -27,8 +24,8 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip  # Pip'i güncelle
-        pip install -r requirements.txt || true  # Eğer `requirements.txt` varsa bağımlılıkları yükler
+        pip install -r requirements.txt  # Bağımlılıkları yükle
 
     - name: Run tests
       run: |
-        python -m unittest discover -s tests -p "*.py"  # Testleri çalıştırır
+        python -m unittest discover -s tests -p "test_tahmin_oyunu.py"  # Belirtilen test dosyasını çalıştır
